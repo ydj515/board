@@ -1,0 +1,36 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://localhost:3306/board?autoReconnect=true&rewriteBatchedStatements=true
+    username: root
+    password: root
+  jpa:
+    database: mysql
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate.jdbc.batch_size: 100
+      hibernate.order_inserts: true
+      hibernate.order_updates: true
+      hibernate.show_sql: true
+  flyway:
+    enabled: false
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 200MB
+      max-request-size: 200MB
+      location: upload-path/
+
+logging:
+  level:
+    root: DEBUG
+
+jwt:
+  secret: eyJhbGciOiJIUzI1NiJ9eyJSb2xlIjoiQWRtaW4iLCJVc2VybmFtZSI6ImRvbmdqaW4iLCJpYXQiOjE2OTQ1MDk2NzR9Are3PItERRA8w20JgbM0NOb5ch6OeNec3cOH5fk97fU
+  access-token-expiration: 1800000 # 30분(밀리초단위)
+  refresh-token-expiration: 2592000000 # 30일(밀리초단위)

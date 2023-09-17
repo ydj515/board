@@ -31,8 +31,6 @@ public class TokenProvider {
     private final Key key;
     private final long accessTokenExpiration;
     private final long refreshTokenExpiration;
-    //    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000L * 60 * 30;            // 30분
-//    private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000L * 60 * 60 * 24 * 30;  // 30일
 
     public TokenProvider(@Value("${jwt.secret}") String secretKey,
                          @Value("${jwt.access-token-expiration}") long accessTokenExpiration,

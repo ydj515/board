@@ -31,12 +31,12 @@ public class SecurityConfig {
 
     // 인터셉터 제외 대상
     public static final String[] INTERCEPTOR_LIST = {
-            "/css/**", "/fonts/**", "/images/**", "/js/**", "/modules/**", "/login.do", "/logout.do", "/upload.do"
+            "/css/**", "/fonts/**", "/images/**", "/js/**", "/modules/**", "/login", "/logout", "/upload"
     };
 
     // api white list
     private static final String[] API_WHITE_LIST = {
-            "/api/auth/**"
+            "/api/auth/**",
     };
 
     private final TokenProvider tokenProvider;

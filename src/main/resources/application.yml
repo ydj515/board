@@ -31,6 +31,6 @@ logging:
     root: DEBUG
 
 jwt:
-  secret: eyJhbGciOiJIUzI1NiJ9eyJSb2xlIjoiQWRtaW4iLCJVc2VybmFtZSI6ImRvbmdqaW4iLCJpYXQiOjE2OTQ1MDk2NzR9Are3PItERRA8w20JgbM0NOb5ch6OeNec3cOH5fk97fU
+  secret: mymasterjsonwebtokensecretkeywithdongjinwithhyuntto
   access-token-expiration: 1800000 # 30분(밀리초단위)
   refresh-token-expiration: 2592000000 # 30일(밀리초단위)

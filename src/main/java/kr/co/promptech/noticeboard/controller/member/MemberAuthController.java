@@ -16,15 +16,14 @@ import org.springframework.web.bind.annotation.*;
 import static kr.co.promptech.noticeboard.enums.ResultCode.*;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 @RequiredArgsConstructor
 public class MemberAuthController {
 
     private final MemberAuthService memberAuthService;
 
     @PostMapping("/join")
-    public ResponseEntity<Api<JoinVo>> join(@RequestBody @Validated JoinDto joinDto,
-                                            BindingResult bindingResult) {
+    public ResponseEntity<Api<JoinVo>> join(@RequestBody @Validated JoinDto joinDto, BindingResult bindingResult) {
         return ResponseEntity.status(HttpStatus.CREATED).body(Api.<JoinVo>builder()
                 .code(JOIN_SUCCESS.code)
                 .message(JOIN_SUCCESS.message)
@@ -33,8 +32,7 @@ public class MemberAuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Api<LoginVo>> login(@RequestBody @Validated LoginDto loginDto,
-                                              BindingResult bindingResult) {
+    public ResponseEntity<Api<LoginVo>> login(@RequestBody @Validated LoginDto loginDto, BindingResult bindingResult) {
         return ResponseEntity.ok(
                 Api.<LoginVo>builder()
                         .code(LOGIN_SUCCESS.code)
@@ -44,9 +42,14 @@ public class MemberAuthController {
         );
     }
 
+    // jwt token test용 url
+    @PostMapping("/test")
+    public String test() {
+        return "success";
+    }
+
     @GetMapping("/refresh/{refresh_token}")
-    public ResponseEntity<Api<LoginVo>> refresh(
-            @PathVariable(value = "refresh_token") String refreshToken) {
+    public ResponseEntity<Api<LoginVo>> refresh(@PathVariable(value = "refresh_token") String refreshToken) {
         return ResponseEntity.ok(
                 Api.<LoginVo>builder()
                         .code(REFRESH_SUCCESS.code)

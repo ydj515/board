@@ -36,7 +36,8 @@ public class SecurityConfig {
 
     // api white list
     private static final String[] API_WHITE_LIST = {
-            "/api/auth/**",
+            "/api/auth/join",
+            "/api/auth/login",
     };
 
     private final TokenProvider tokenProvider;

@@ -46,7 +46,7 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 
     private ErrorDto createErrorDto(HttpServletRequest request) {
         return ErrorDto.builder()
-                .location("Unauthorized")
+                .point("Unauthorized")
                 .details("Unauthorized token")
                 .build();
     }

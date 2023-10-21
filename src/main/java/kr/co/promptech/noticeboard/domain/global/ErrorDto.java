@@ -8,8 +8,8 @@ import lombok.Getter;
 @Builder
 public class ErrorDto {
 
-    @NotNull(message = "location cannot be empty.")
-    private String location;
+    @NotNull(message = "point cannot be empty.")
+    private String point;
     @NotNull(message = "details cannot be empty.")
     private String details;
 }

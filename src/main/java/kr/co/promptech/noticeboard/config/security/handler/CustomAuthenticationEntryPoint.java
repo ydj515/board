@@ -54,7 +54,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
         String details = requestURI.contains("/login") ? "please check email or password" : "please check access token";
 
         return ErrorDto.builder()
-                .location(location)
+                .point(location)
                 .details(details)
                 .build();
     }

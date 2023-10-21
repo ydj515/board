@@ -18,7 +18,11 @@ spring:
       hibernate.order_updates: true
       hibernate.show_sql: true
   flyway:
-    enabled: false
+    enabled: true
+    baseline-on-migrate: false
+    url: jdbc:mariadb://localhost:3306/board?serverTimezone=UTC&characterEncoding=UTF-8
+    user: root
+    password: root
   servlet:
     multipart:
       enabled: true

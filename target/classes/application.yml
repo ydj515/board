@@ -17,6 +17,10 @@ spring:
       hibernate.order_inserts: true
       hibernate.order_updates: true
       hibernate.show_sql: true
+      hibernate:
+        format_sql: true
+        highlight_sql: true
+        use_sql_comments: true
   flyway:
     enabled: true
     baseline-on-migrate: false
@@ -32,9 +36,30 @@ spring:
 
 logging:
   level:
-    root: DEBUG
+    kr.co.promptech.noticeboard.feign: debug
+    ads.client: debug # open feign package 로그를 보기 위함.
+    com.client.external: debug
+    org:
+      hibernate:
+        SQL: debug
+        type:
+          descriptor:
+            sql: trace
 
 jwt:
   secret: mymasterjsonwebtokensecretkeywithdongjinwithhyuntto
   access-token-expiration: 1800000 # 30분(밀리초단위)
   refresh-token-expiration: 2592000000 # 30일(밀리초단위)
+
+external:
+  service:
+    host: 'https://apis.data.go.kr/B552735/k-startup/kisedGWAPI'
+
+feign:
+  retry:
+    period: 10
+    max-period: 20
+    max-attempt : 3
+
+servicekey:
+  uv%2FX9jKubRtlJU3O2UQs7cl3898gk5XsWLLU1KlA5h5u8isQKJ7kkdJG7r43IVVvmHno54E%2FGA2djuDmVWPZzQ%3D%3D

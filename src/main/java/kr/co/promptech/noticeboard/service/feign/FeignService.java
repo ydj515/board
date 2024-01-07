@@ -1,6 +1,7 @@
 package kr.co.promptech.noticeboard.service.feign;
 
-import kr.co.promptech.noticeboard.domain.model.feign.kstartup.FeignResultkstartup;
+import kr.co.promptech.noticeboard.domain.model.feign.kstartup.KstartupApiResponse;
+import kr.co.promptech.noticeboard.domain.model.feign.kstartup.KstartupRequestParam;
 import kr.co.promptech.noticeboard.domain.model.feign.portal.ApiResponse;
 import kr.co.promptech.noticeboard.domain.model.feign.portal.PortalRequestParam;
 import kr.co.promptech.noticeboard.feign.MyFeignClientKstartup;
@@ -22,14 +23,17 @@ public class FeignService {
 
     public void testFeign() {
 
-        FeignResultkstartup resultkstartup = feignClientKstartup.getAnnouncementList(
-                serviceKey,
-                1,
-                10,
-                "20230301",
-                "20230310",
-                "Y",
-                "json"
+        KstartupRequestParam kstartupRequestParam = KstartupRequestParam.builder()
+                .page(1)
+                .perPage(10)
+                .serviceKey(serviceKey)
+                .returnType("json")
+                .reginClss("전라북도")
+                .cntrNm("한국농수산대학 창업보육센터")
+                .build();
+
+        KstartupApiResponse resultkstartup = feignClientKstartup.getCenterList(
+                kstartupRequestParam
         );
 
         PortalRequestParam param = PortalRequestParam.builder()

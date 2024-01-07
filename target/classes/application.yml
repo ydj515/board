@@ -53,7 +53,7 @@ jwt:
 
 external:
   service:
-    host: 'https://apis.data.go.kr/B552735/k-startup/kisedGWAPI'
+    host: https://apis.data.go.kr/B552735
 
 feign:
   retry:

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="ko" xml:lang="ko" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<th:block th:replace="fragments/scripts :: scripts"/>
+<th:block th:replace="fragments/header :: header"/>
+<div class="container-fluid">
+    <div class="row">
+        <div th:replace="fragments/nav :: nav"></div>
+
+        <div layout:fragment="content" id="main-content">
+
+        </div>
+    </div>
+</div>
+<th:block th:replace="fragments/footer :: footer"/>
+</html>

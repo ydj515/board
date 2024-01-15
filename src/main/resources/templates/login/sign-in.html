@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.w3.org/1999/xhtml">
+<!--<link rel="stylesheet" type="text/css" th:href="@{css/app.css}" />-->
+<th:block th:replace="fragments/scripts :: scripts"/>
+<body class="vh-100">
+<section class="vh-100">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                <div class="card bg-light shadow-lg" style="border-radius: 1rem;">
+                    <div class="card-body p-5 text-center" style="height: 600px; overflow: hidden;">
+                        <div class="mb-md-5 mt-md-4 pb-5">
+                            <h2 class="fw-bold mb-5 text-uppercase">sample board</h2>
+                            <form id="sign-in-form" class="needs-validation mb-3" action="/api/auth/login" novalidate>
+                                <div class="form-floating form-white mb-4">
+                                    <input type="text" id="id" class="form-control form-control-lg" required>
+                                    <label for="id">ID</label>
+                                    <div class="invalid-feedback">아이디를 입력해주세요.</div>
+                                </div>
+                                <div class="form-floating form-white mb-4">
+                                    <input type="password" id="password" class="form-control form-control-lg" required>
+                                    <label for="password">Password</label>
+                                    <div class="invalid-feedback">비밀번호를 입력해주세요.</div>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-lg px-5 mt-4" id="sign-in-button">SignIn</button>
+                            </form>
+                            <div id="errorMessage" class="alert alert-danger d-none"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>
+<script th:src="@{/js/app/signIn.js}"></script>
+<script>
+    $(document).ready(() => {
+        new SignIn();
+    })
+</script>

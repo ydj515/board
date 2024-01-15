@@ -1,0 +1,18 @@
+<th:block th:fragment="nav" xmlns:th="http://www.thymeleaf.org">
+    <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse" style="height: 90vh">
+        <div class="position-sticky pt-3 mb-2">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link" href="/dashboard">
+                        Dashboard
+                    </a>
+                </li>
+                <li class="nav-item" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
+                    <a class="nav-link" href="/admin/user">
+                        회원 관리
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</th:block>

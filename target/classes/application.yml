@@ -47,19 +47,19 @@ logging:
             sql: trace
 
 jwt:
-  secret: mymasterjsonwebtokensecretkeywithdongjinwithhyuntto
+  secret: promptech6441promptech6441promptech6441promptech6441promptech6441
   access-token-expiration: 1800000 # 30분(밀리초단위)
   refresh-token-expiration: 2592000000 # 30일(밀리초단위)
 
 external:
   service:
-    host: https://apis.data.go.kr/B552735
+    host: HOST
 
 feign:
   retry:
     period: 10
     max-period: 20
-    max-attempt : 3
+    max-attempt: 3
 
 servicekey:
-  uv%2FX9jKubRtlJU3O2UQs7cl3898gk5XsWLLU1KlA5h5u8isQKJ7kkdJG7r43IVVvmHno54E%2FGA2djuDmVWPZzQ%3D%3D
+  SERVICEKEY

@@ -47,28 +47,36 @@ public class TokenProvider {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
 
-        long now = (new Date()).getTime();
+        Date now = new Date();
 
-        // Access Token 생성
-        Date accessTokenExpiresIn = new Date(now + accessTokenExpiration);
-        String accessToken = createAccessToken(authentication.getName(), authorities, accessTokenExpiresIn);
+        //Access Token 생성
+        String accessToken = createAccessToken(authentication.getName(), authorities, now);
 
         // Refresh Token 생성
-        String refreshToken = Jwts.builder()
-                .setExpiration(new Date(now + refreshTokenExpiration))
-                .signWith(key, SignatureAlgorithm.HS256)
-                .compact();
+        String refreshToken = createRefreshToken(now);
 
-        return new LoginVo(Constants.BEARER_PREFIX, accessToken, refreshToken, accessTokenExpiresIn.getTime(), null);
+
+
+
+        return new LoginVo(Constants.BEARER_PREFIX, accessToken, refreshToken, null, null);
     }
 
-    //Access Token 생성
-    public String createAccessToken(String subject, String authorities, Date accessTokenExpiresIn) {
+    public String createAccessToken(String subject, String authorities, Date nowDate) {
         return Jwts.builder()
                 .setSubject(subject)
                 .claim(Constants.AUTH, authorities)
-                .setExpiration(accessTokenExpiresIn)
+                .setExpiration(new Date(nowDate.getTime() + accessTokenExpiration))
                 .signWith(key, SignatureAlgorithm.HS256)
+                .compact();
+    }
+
+    public String createRefreshToken(Date nowDate) {
+
+        return Jwts
+                .builder()
+                .setIssuedAt(nowDate)
+                .setExpiration(new Date(nowDate.getTime()+refreshTokenExpiration))
+                .signWith(SignatureAlgorithm.HS256, key)
                 .compact();
     }
 

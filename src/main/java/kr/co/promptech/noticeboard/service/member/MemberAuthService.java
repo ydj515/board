@@ -17,22 +17,21 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 @Transactional(readOnly = true)
-public class MemberAuthService implements UserDetailsService {
+public class MemberAuthService {
     private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000L * 60 * 30;            // 30분
 
     private final MemberRepository memberRepository;
@@ -72,7 +71,7 @@ public class MemberAuthService implements UserDetailsService {
         Claims claims = tokenProvider.parseClaims(originAccessToken);
 
         String sub = claims.get("sub").toString();
-        Date accessTokenExpired = new Date((new Date()).getTime() + ACCESS_TOKEN_EXPIRE_TIME);
+        Date now = new Date();
 
         Member member = memberRepository.findById(Long.parseLong(sub)).orElseThrow(() ->
                 new IllegalArgumentException("유효하지 않은 회원입니다.")
@@ -86,12 +85,12 @@ public class MemberAuthService implements UserDetailsService {
                 .replace(" ", "");
 
         String accessToken = tokenProvider.createAccessToken(String.valueOf(member.getId()),
-                roleList, accessTokenExpired);
+                roleList, now);
 
         Authentication authentication = tokenProvider.getAuthentication(accessToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        return new LoginVo(Constants.BEARER_PREFIX, accessToken, refreshToken, accessTokenExpired.getTime(), null);
+        return new LoginVo(Constants.BEARER_PREFIX, accessToken, refreshToken, null, null);
     }
 
     public LoginVo authKakao(String code) {
@@ -104,22 +103,5 @@ public class MemberAuthService implements UserDetailsService {
         //TODO : kakao login 구현
 
         return null;
-    }
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        log.debug("Member authentication processing");
-
-        Member member = memberRepository.findByEmail(username)
-                .orElseThrow(() -> new UsernameNotFoundException("유효하지 않은 회원입니다."));
-
-        Role role = member.getRole();
-        String[] roles = role.getRoleList().split(",");
-
-        return User.builder()
-                .username(String.valueOf(member.getId()))
-                .password(member.getPassword())
-                .roles(roles)
-                .build();
     }
 }

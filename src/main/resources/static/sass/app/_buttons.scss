@@ -1,0 +1,109 @@
+.btn {
+  border-radius: 0.375rem !important;
+}
+
+$shade-weight: 15%;
+$tint-weight: 15%;
+@mixin mixin-btn($selector: selector, $color: color, $type: 'base') {
+  $default: getColor(#{$color}, #{$type});
+  $contrast: color-contrast($default);
+  $event-color: if($contrast == $color-contrast-light, shade-color($default, $shade-weight), tint-color($default, $shade-weight));
+
+  .#{$selector} {
+    color: #fff;
+    background-color: $default;
+    border-color: $default;
+
+    &:hover {
+      color: #fff;
+      background-color: $event-color;
+      border-color: $event-color;
+    }
+
+    &:focus, &.focus {
+      color: #fff;
+      background-color: $event-color;
+      border-color: $default;
+      box-shadow: 0 0 0 .2rem rgba($event-color, 0.5)
+    }
+
+    &[disabled] {
+      color: #fff;
+      background-color: $event-color;
+      border-color: $event-color;
+      opacity: 0.6;
+
+      &:hover {
+        color: #fff;
+        background-color: $event-color;
+        border-color: $event-color;
+      }
+    }
+  }
+}
+
+@mixin mixin-btn-outline($selector: selector, $color: color, $type: 'base') {
+  $default: getColor(#{$color}, #{$type});
+  $contrast: color-contrast($default);
+  $event-color: if($contrast == $color-contrast-light, shade-color($default, $shade-weight), tint-color($default, $shade-weight));
+  .#{$selector} {
+    color: $default !important;
+    background-color: #fff;
+    border-color: $default;
+
+    &:hover {
+      color: #fff !important;
+      background-color: $default;
+      border-color: $default;
+    }
+
+    &:focus, &.focus {
+      color: #fff !important;
+      background-color: $default;
+      box-shadow: 0 0 0 .2rem rgba($default, 0.5)
+    }
+
+    &[disabled] {
+      &:hover {
+        color: #fff !important;
+        background-color: $event-color;
+        border-color: $event-color;
+      }
+    }
+  }
+  .#{$selector}:not(:disabled):not(.disabled):active,
+  .#{$selector}:not(:disabled):not(.disabled).active,
+  .show > .#{$selector}.dropdown-toggle {
+    color: #fff;
+    background-color: getColor(#{$color}, #{$type});
+    border-color: getColor(#{$color}, #{$type});
+  }
+}
+
+@each $color_type, $color in $colors {
+  @each $color_name, $color_value in $color {
+    @if $color_name == "base" {
+      @include mixin-btn("btn-#{$color_type}", #{$color_type}, 'base');
+      @include mixin-btn-outline(btn-outline-#{$color_type}, #{$color_type}, 'base');
+    } @else if $color_name != "base" {
+      @include mixin-btn('btn-#{$color_type}-#{$color_name}', #{$color_type}, #{$color_name});
+      @include mixin-btn-outline('btn-outline-#{$color_type}-#{$color_name}', #{$color_type}, #{$color_name});
+    }
+  }
+}
+
+@include mixin-btn-outline('btn-default', 'grey');
+@include mixin-btn-outline('btn-list', 'primary');
+@include mixin-btn-outline('btn-show', 'primary');
+@include mixin-btn('btn-save', 'primary');
+@include mixin-btn('btn-new', 'primary');
+@include mixin-btn-outline('btn-edit', 'primary');
+@include mixin-btn-outline('btn-delete', 'red');
+@include mixin-btn-outline('btn-cancel', 'red');
+@include mixin-btn-outline('btn-run', 'point');
+@include mixin-btn('btn-search', 'primary', 'darken-1');
+@include mixin-btn-outline('btn-download', 'secondary');
+
+.btn.btn-100 {
+  width: 100%;
+}

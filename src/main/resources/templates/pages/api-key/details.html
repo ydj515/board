@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="ko" xml:lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/app}">
+
+<title layout:fragment="title">Api Key Details</title>
+
+<th:block layout:fragment="content">
+    <main>
+        <div class="container-fluid px-4">
+            <h1 class="mt-4">인증키 관리</h1>
+            <ol class="breadcrumb mb-4">
+                <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="/keys">인증키 목록</a></li>
+                <li class="breadcrumb-item active">인증키 상세조회</li>
+            </ol>
+            <div class="card mb-4">
+                <div class="card-body">
+                    인증키의 자세한 정보를 확인할 수 있습니다.
+                </div>
+            </div>
+            <div class="container mt-5">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <span class="align-middle">인증키 정보</span>
+                    </div>
+                    <div>
+                        <button class="btn btn-sm btn-primary dispose-btn">인증키 폐기</button>
+                    </div>
+                </div>
+                <hr class="bg-secondary border-1 border-secondary mt-1" />
+                <table class="table table-bordered mt-2">
+                    <colgroup>
+                        <col style="width: 30%">
+                        <col style="width: 70%">
+                    </colgroup>
+                    <tr>
+                        <th>인증키</th>
+                        <td th:text="${keyData.get('key')}"></td>
+                    </tr>
+                    <tr>
+                        <th>생성일시</th>
+                        <td th:text="${#temporals.format(keyData.get('crtDt'), 'yyyy-MM-dd HH:mm:ss')}"></td>
+                    </tr>
+                    <tr>
+                        <th>마지막 사용일시</th>
+                        <td th:text="${#temporals.format(keyData.get('lastRqstDt'), 'yyyy-MM-dd HH:mm:ss')}"></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="container mt-3">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <span class="align-middle">권한</span>
+                    </div>
+                    <div>
+                        <button class="btn btn-sm btn-primary modify-auth-btn">권한 저장</button>
+                    </div>
+                </div>
+                <hr class="bg-secondary border-1 border-secondary mt-1" />
+                <div class="container">
+                    <div>
+                        <input id="carInfo" class="check-box" type="checkbox">
+                        <label for="carInfo">자동차 기본정보</label>
+                    </div>
+                    <div>
+                        <input id="inspectionHistory" class="check-box" type="checkbox">
+                        <label for="inspectionHistory">검사이력</label>
+                    </div>
+                    <div>
+                        <input id="xxxInfo" class="check-box" type="checkbox">
+                        <label for="xxxInfo">XXX 정보</label>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-end mb-3">
+                <a href="/keys">
+                    <button type="button" class="btn btn-secondary">Back</button>
+                </a>
+            </div>
+        </div>
+    </main>
+</th:block>
+<th:block layout:fragment="scripts">
+    <script>
+        var disposeButton = document.querySelector('.dispose-btn'); // 인증키 폐기 버튼
+        var modifyAuthButton = document.querySelector('.modify-auth-btn'); // 권한 저장 버튼
+
+        // 인증키 폐기 버튼 클릭 이벤트
+        disposeButton.addEventListener('click', function (e) {
+            if (confirm("정말로 인증키를 폐기하시겠습니까?")) {
+                //TODO : 인증키 폐기 기능 작성
+                alert("인증키가 폐기되었습니다.");
+                window.location.replace("/keys");
+            }
+        });
+
+        // 권한 저장 버튼 클릭 이벤트
+        modifyAuthButton.addEventListener('click', function (e) {
+            //TODO : 권한 저장(권한 수정) 기능 작성
+            alert("권한이 저장되었습니다.");
+        });
+    </script>
+</th:block>
+</html>

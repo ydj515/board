@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="ko" xml:lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/app}">
+
+<title layout:fragment="title">Log Details - MOLIT</title>
+
+<th:block layout:fragment="content">
+    <main>
+        <div class="container-fluid px-4">
+            <h1 class="mt-4">Job Execution Log Details</h1>
+            <ol class="breadcrumb mb-4">
+                <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="/admin/jobs/log">Job Execution Log</a></li>
+                <li class="breadcrumb-item active">Details</li>
+            </ol>
+            <div class="card mb-4">
+                <div class="card-body">
+                    Job Execution Log의 자세한 정보를 확인할 수 있습니다.
+                </div>
+            </div>
+            <div class="container mt-5">
+                <table class="table table-bordered">
+                    <tr>
+                        <th>ID</th>
+                        <td th:text="${log.id}"></td>
+                    </tr>
+                    <tr>
+                        <th>Job Execution ID</th>
+                        <td th:text="${log.jobExecutionId}"></td>
+                    </tr>
+                    <tr>
+                        <th>Job Instance ID</th>
+                        <td th:text="${log.jobInstanceId}"></td>
+                    </tr>
+                    <tr>
+                        <th>Job Name</th>
+                        <td th:text="${log.jobName}"></td>
+                    </tr>
+                    <tr>
+                        <th>Batch Status</th>
+                        <td th:text="${log.batchStatus}"></td>
+                    </tr>
+                    <tr>
+                        <th>Exit Status</th>
+                        <td th:text="${log.exitStatus}"></td>
+                    </tr>
+                    <tr>
+                        <th>Create Time</th>
+                        <td th:text="${#dates.format(log.createTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                    </tr>
+                    <tr>
+                        <th>Start Time</th>
+                        <td th:text="${#dates.format(log.startTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                    </tr>
+                    <tr>
+                        <th>End Time</th>
+                        <td th:text="${#dates.format(log.endTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                    </tr>
+                    <tr>
+                        <th>Read Count</th>
+                        <td th:text="${log.readCount}"></td>
+                    </tr>
+                    <tr>
+                        <th>Write Count</th>
+                        <td th:text="${log.writeCount}"></td>
+                    </tr>
+                    <tr>
+                        <th>Commit Count</th>
+                        <td th:text="${log.commitCount}"></td>
+                    </tr>
+                    <tr>
+                        <th>Rollback Count</th>
+                        <td th:text="${log.rollbackCount}"></td>
+                    </tr>
+                    <tr>
+                        <th>Read Skip Count</th>
+                        <td th:text="${log.readSkipCount}"></td>
+                    </tr>
+                    <tr>
+                        <th>Process Skip Count</th>
+                        <td th:text="${log.processSkipCount}"></td>
+                    </tr>
+                    <tr>
+                        <th>Write Skip Count</th>
+                        <td th:text="${log.writeSkipCount}"></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="d-flex justify-content-end mb-3">
+                <a href="/admin/jobs/log">
+                    <button type="button" class="btn btn-secondary">Back</button>
+                </a>
+            </div>
+        </div>
+    </main>
+</th:block>
+</html>

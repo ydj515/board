@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ko" xml:lang="ko" xmlns:th="http://www.thymeleaf.org">
+<ul class="pagination justify-content-center" th:fragment="pagination"
+    th:if="${page.totalCount} > 0"
+    th:with="begin=${page.beginPage}, end=${page.endPage}">
+    <li class="page-item" th:classappend="${page.currentPage == 1 ? 'disabled' : ''}">
+        <a class="page-link" th:href="@{__${#httpServletRequest.requestURI}__(currentPage=__${page.currentPage - 1}__)}" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+        </a>
+    </li>
+    <li
+        th:each="current:${#numbers.sequence(begin, end)}" class="page-item" th:classappend="${page.currentPage == current ? 'active' : ''}">
+        <a class="page-link" th:href="@{__${#httpServletRequest.requestURI}__(currentPage=__${current}__)}" th:text="${current}"></a>
+    </li>
+    <li class="page-item" th:classappend="${page.currentPage >= page.endPage ? 'disabled' : ''}">
+        <a class="page-link" th:href="@{__${#httpServletRequest.requestURI}__(currentPage=__${page.currentPage +1}__)}" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+        </a>
+    </li>
+</ul>
+</html>

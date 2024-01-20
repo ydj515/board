@@ -1,0 +1,12 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="card(title, link)">
+    <div class="card bg-danger text-white mb-4">
+        <div class="card-body" th:text="${title}">Danger Card</div>
+        <div class="card-footer d-flex align-items-center justify-content-between">
+            <a class="small text-white stretched-link" th:href="${link}">View Details</a>
+            <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+        </div>
+    </div>
+</div>
+</html>

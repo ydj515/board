@@ -1,0 +1,29 @@
+.pagination {
+  li {
+    .page-link {
+      display: inline-block;
+      background-color: transparent;
+      border: none;
+      color: $font-black;
+      text-align: center;
+
+      &:hover {
+        background-color: getColor('primary', 'lighten-1');
+        color: #fff;
+      }
+    }
+
+    &.active {
+      background-color: getColor('primary', 'base');
+
+      .page-link {
+        color: #ffffff;
+
+        &:hover {
+          background-color: transparent;
+          color: #ffffff;
+        }
+      }
+    }
+  }
+}

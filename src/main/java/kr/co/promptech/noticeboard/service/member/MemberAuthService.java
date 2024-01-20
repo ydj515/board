@@ -116,6 +116,12 @@ public class MemberAuthService implements UserDetailsService {
         Role role = member.getRole();
         String[] roles = role.getRoleList().split(",");
 
+//        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(member.getEmail(), member.getPassword());
+//
+//        // security에 구현한 AuthService가 실행됨
+//        Authentication authenticate = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+
+
         return User.builder()
                 .username(String.valueOf(member.getId()))
                 .password(member.getPassword())

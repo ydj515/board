@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko" xml:lang="ko" xmlns:th="http://www.thymeleaf.org">
+<div class="modal fade" id="createTableModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true" th:fragment="content">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="modalLabel">테이블 추가</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="tableName" class="form-label">테이블 명</label>
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="tableName" placeholder="테이블 명">
+                        <label for="tableName">테이블 명</label>
+                    </div>
+                    <div class="form-text">테이블 명을 입력해주세요.</div>
+                </div>
+                <div>
+                    <label for="tableType" class="form-label">테이블 타입</label>
+                    <select id="tableType" class="form-select">
+                        <option value="">테이블 타입을 선택해주세요</option>
+                        <option th:each="tableType : ${T(molitapi.apiserver.model.enums.TableType).values()}"
+                                th:value="${tableType.schema}"
+                                th:text="${tableType.details}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                <button type="button" class="btn btn-primary create-table-btn">저장</button>
+            </div>
+        </div>
+    </div>
+</div>
+</html>

@@ -27,7 +27,8 @@ public class SecurityConfig {
 
     // 권한 제외 대상
     public static final String[] PERMITTED_LIST = {
-            "/", "/sign-in", "/sign-out", "/swagger-ui/**", "/swagger-ui", "/swagger/**", "/v3/api-docs/**",
+            "/",
+            "/sign-in", "/sign-out", "/swagger-ui/**", "/swagger-ui", "/swagger/**", "/v3/api-docs/**",
             "/dashboard/collect"
     };
 
@@ -50,6 +51,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+                .httpBasic(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
                 .headers(config -> config.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable).disable())
@@ -60,8 +62,8 @@ public class SecurityConfig {
                                 .requestMatchers(PERMITTED_LIST).permitAll()
                                 .requestMatchers(INTERCEPTOR_LIST).permitAll()
                                 .requestMatchers(API_WHITE_LIST).permitAll()
-//                                .anyRequest().authenticated()
-                                .anyRequest().permitAll() // 로그인 하지 않고 모두 권한을 가짐
+                                .anyRequest().authenticated()
+//                                .anyRequest().permitAll() // 로그인 하지 않고 모두 권한을 가짐
                         ;
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -78,7 +80,7 @@ public class SecurityConfig {
                         config
                                 .authenticationEntryPoint(authenticationEntryPoint)
                                 .accessDeniedHandler(accessDeniedHandler))
-                .sessionManagement(config -> config.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+//                .sessionManagement(config -> config.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .apply(new JwtSecurityConfig(tokenProvider))
         ;
         return http.build();

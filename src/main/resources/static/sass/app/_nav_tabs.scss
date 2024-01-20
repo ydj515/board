@@ -1,0 +1,30 @@
+@mixin mixin-nav-tabs($selector: selector, $color: color, $type: type) {
+  .nav.nav-tabs.nav-pills.#{$selector} {
+    .nav-link {
+      color: #000;
+      background-color: #fff;
+      border-top-width: 1px;
+      border-color: getColor(#{$color}, #{$type});
+
+      &.active {
+        color: #fff;
+        background-color: getColor(#{$color}, #{$type});
+        border-color: getColor(#{$color}, #{$type});
+      }
+    }
+
+    &:not(:first-child):not(:last-child) {
+      .nav-link {
+        &:not(.active) {
+          border-right: 1px solid getColor(#{$color}, #{$type});
+        }
+      }
+    }
+  }
+}
+
+@each $color_type, $color in $colors {
+  @each $color_name, $color_value in $color {
+      @include mixin-nav-tabs("nav-tabs-#{$color_type}-#{$color_name}", #{$color_type}, #{$color_name});
+  }
+}

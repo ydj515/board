@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="ko" xml:lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/app}">
+
+<title layout:fragment="title">Record Details - MOLIT</title>
+
+<th:block layout:fragment="content">
+    <main>
+        <div class="container-fluid px-4">
+            <h1 class="mt-4">데이터베이스 관리</h1>
+            <ol class="breadcrumb mb-4">
+                <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="/databases">데이터베이스 관리</a></li>
+                <li class="breadcrumb-item"><a th:href="@{/databases/__${tableInfo.id}__}">테이블 상세조회</a></li>
+                <li class="breadcrumb-item active">데이터 조회</li>
+            </ol>
+            <div class="card mb-4">
+                <div class="card-body">
+                    테이블의 자세한 컬럼 정보를 확인할 수 있습니다.
+                </div>
+            </div>
+            <div class="container mt-5">
+                <div class="container d-flex justify-content-start">
+                    <div class="col">
+                        <span class="align-middle total-count" th:text="'총 ' + ${page.totalCount} + '건'"></span>
+                    </div>
+                </div>
+                <table class="table table-bordered mt-2">
+                    <thead>
+                    <tr class="text-center">
+                        <th th:each="columnInfo : ${columnInfoList}" th:text="${columnInfo.name}"></th>
+                        <th>수정</th>
+                        <th>삭제</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:if="${#lists.size(recordList) > 0}" th:each="record : ${recordList}" class="record">
+                        <th th:each="columnInfo : ${columnInfoList}" class="record-data">
+                            <input readonly class="form-control-plaintext" th:data-column-name="${columnInfo.name}"
+                                   th:value="${record.containsKey(columnInfo.name)} ? ${record.get(columnInfo.name)} : ''"/>
+                        </th>
+                        <th class="text-center">
+                            <button class="btn btn-sm btn-primary edit-record-btn" th:data-id="${record.get('ID')}">
+                                수정
+                            </button>
+                        </th>
+                        <th class="text-center">
+                            <button class="btn btn-sm btn-primary delete-record-btn" th:data-id="${record.get('ID')}">
+                                삭제
+                            </button>
+                        </th>
+                    </tr>
+                    <tr th:unless="${#lists.size(recordList) > 0}">
+                        <th colspan="100%" class="text-center">
+                            데이터가 없습니다.
+                        </th>
+                    </tr>
+                    </tbody>
+                </table>
+                <th:block th:replace="components/pagination::pagination"/>
+            </div>
+            <div class="d-flex justify-content-end mb-3">
+                <a th:href="@{/databases/__${tableInfo.id}__}">
+                    <button type="button" class="btn btn-secondary">Back</button>
+                </a>
+            </div>
+        </div>
+    </main>
+</th:block>
+<th:block layout:fragment="scripts">
+    <script>
+        /*<![CDATA[*/
+        var tableInfoId = [[${tableInfo.id}]];
+        /*]]>*/
+
+        var updateRecordButton = document.querySelectorAll('.edit-record-btn'); // 데이터 수정 버튼
+        var deleteRecordButton = document.querySelectorAll('.delete-record-btn'); // 데이터 삭제 버튼
+
+        // 데이터 수정,저장 버튼 클릭 이벤트
+        updateRecordButton.forEach(function (button, index) {
+            button.addEventListener('click', function (e) {
+                var records = document.querySelectorAll('.record');
+                var targetRecord = records[index];
+                var targetData = targetRecord.querySelectorAll('.record-data');
+
+                if (button.closest('.edit-record-btn')) {
+                    // 수정 버튼 클릭시 (로컬 수정)
+                    targetData.forEach(function (data) {
+                        var dataInput = data.querySelector('input');
+                        dataInput.removeAttribute('readonly');
+                        dataInput.classList.remove('form-control-plaintext');
+                        dataInput.classList.add('form-control');
+                    });
+                    button.textContent = '저장';
+                    button.classList.remove('edit-record-btn');
+                    button.classList.add('update-record-btn');
+
+                } else if (button.closest('.update-record-btn')) {
+                    // 저장 버튼 클릭시 (데이터 전송)
+                    var updatedRecord = {};
+                    var updatedData = {};
+                    targetData.forEach(function (data) {
+                        var dataInput = data.querySelector('input');
+                        dataInput.setAttribute('readonly', '');
+                        dataInput.classList.remove('form-control');
+                        dataInput.classList.add('form-control-plaintext');
+                        updatedData[dataInput.dataset.columnName] = dataInput.value;
+                    });
+                    button.textContent = '수정';
+                    button.classList.remove('update-record-btn');
+                    button.classList.add('edit-record-btn');
+                    updatedRecord['recordId'] = button.dataset.id;
+                    updatedRecord['tableInfoId'] = tableInfoId;
+                    updatedRecord['data'] = updatedData;
+
+                    var targetUrl = '/rest/databases/records/update';
+
+                    fetch(targetUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(updatedRecord),
+                    }).then((res) => {
+                        if (res.ok) {
+                            alert("데이터가 수정되었습니다.");
+                        } else {
+                            res.json().then((data) => {
+                                alert(data.details);
+                            }).catch(() => {
+                                alert("오류가 발생했습니다. 잠시후 다시 시도해주세요.");
+                            });
+                        }
+                    });
+                }
+            });
+        });
+
+        // 데이터 삭제 버튼 클릭 이벤트
+        deleteRecordButton.forEach(function (button) {
+            button.addEventListener('click', function () {
+                if (confirm('정말로 데이터를 삭제하시겠습니까?')) {
+                    var targetUrl = '/rest/databases/records/delete';
+
+                    fetch(targetUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            tableInfoId: tableInfoId,
+                            recordId: button.dataset.id,
+                        }),
+                    }).then((res) => {
+                        if (res.ok) {
+                            alert("데이터가 삭제되었습니다.");
+                            window.location.reload();
+                        } else {
+                            res.json().then((data) => {
+                                alert(data.details);
+                            }).catch(() => {
+                                alert("오류가 발생했습니다. 잠시후 다시 시도해주세요.");
+                            });
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</th:block>
+</html>

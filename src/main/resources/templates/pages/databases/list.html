@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="ko" xml:lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/app}">
+
+<title layout:fragment="title">Database</title>
+
+<th:block layout:fragment="content">
+    <main>
+        <div class="container-fluid px-4">
+            <h1 class="mt-4">데이터베이스 관리</h1>
+            <ol class="breadcrumb mb-4">
+                <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+                <li class="breadcrumb-item active">테이블 관리</li>
+            </ol>
+            <div class="card mb-4">
+                <div class="card-body">
+                    테이블 목록을 확인하실 수 있습니다.
+                </div>
+            </div>
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-table me-1"></i>
+                    데이터베이스 테이블
+                </div>
+                <div class="card-body">
+                    <div class="container d-flex justify-content-between">
+                        <div>
+                            <span class="align-middle total-count" th:text="'총 ' + ${page.totalCount} + '건'"></span>
+                        </div>
+                    </div>
+                    <table class="table align-middle">
+                        <colgroup>
+                            <col style="width: 15%">
+                            <col style="width: 30%">
+                            <col style="width: 40%">
+                            <col style="width: 15%">
+                        </colgroup>
+                        <thead>
+                        <tr class="text-center">
+                            <th>ID</th>
+                            <th>타입</th>
+                            <th>테이블 명</th>
+                            <th>상세보기</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:if="${#lists.size(tableInfoList) > 0}" th:each="tableInfo : ${tableInfoList}">
+                            <th class="text-center">
+                                <span th:text="${tableInfo.id}"></span>
+                            </th>
+                            <th class="text-center">
+                                <span class="api-key" th:text="${tableInfo.typeName}"></span>
+                            </th>
+                            <th class="text-center">
+                                <span th:text="${tableInfo.name}"></span>
+                            </th>
+                            <th class="text-center">
+                                <a class="btn btn-sm btn-primary" th:href="@{__${#strings.endsWith(#request.requestURI, '/') ? #request.requestURI : #request.requestURI + '/'}____${tableInfo.id}__}">
+                                    상세보기
+                                </a>
+                            </th>
+                        </tr>
+                        <tr th:unless="${#lists.size(tableInfoList) > 0}">
+                            <th colspan="4" class="text-center">
+                                데이터가 없습니다.
+                            </th>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="text-end">
+                        <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#createTableModal">테이블 추가</button>
+                    </div>
+                    <th:block th:replace="components/pagination::pagination"/>
+                </div>
+            </div>
+        </div>
+        <th:block th:replace="pages/databases/_create-table-modal"/>
+    </main>
+</th:block>
+<th:block layout:fragment="scripts">
+    <script>
+        var createTableModal = document.getElementById('createTableModal'); // 테이블 추가 모달
+        var tableName = document.getElementById('tableName'); // 테이블 추가 모달 내 테이블 명 input
+        var tableType = document.getElementById('tableType'); // 테이블 추가 모달 내 테이블 타입 input
+        var createTableButton = document.querySelector('.create-table-btn'); // 테이블 추가 모달 내 저장 버튼
+
+        // 모달이 닫힐 경우 모달 내 데이터 초기화
+        createTableModal.addEventListener('hidden.bs.modal', () => {
+            tableName.value = '';
+            tableType.value = '';
+        });
+
+        // 테이블 추가 모달 저장 버튼 클릭스
+        createTableButton.addEventListener('click', function (e) {
+
+            // TODO : 테이블 명 및 테이블 타입 조건 확인 후 validation 적용 필요 (테이블 타입 code 사용? 현재는 enum으로 code, detail-한글명칭-으로 분리되어있음)
+            // 입력항목 validation
+            if (tableName.value == '') {
+                alert("테이블 명을 입력해주세요.");
+                return false;
+            }
+            if (tableName.value.length > 300) {
+                alert("테이블 명은 300자를 초과할 수 없습니다.");
+                return false;
+            }
+            if (!/^[a-zA-Z_]+$/.test(tableName.value)) {
+                alert("테이블 명은 알파벳과 _(언더스코어)를 제외한 문자를 사용할 수 없습니다.");
+                return false;
+            }
+            if (tableType.value == '') {
+                alert("테이블 타입을 선택해주세요.");
+                return false;
+            }
+
+            if (confirm("정말로 테이블을 추가하시겠습니까?")) {
+                var target = '/rest/databases/tables';
+
+                fetch(target, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        type: tableType.value,
+                        name: tableName.value,
+                    }),
+                }).then((res) => {
+                    if (res.ok) {
+                        alert("테이블이 추가되었습니다.");
+                        window.location.reload();
+                    } else {
+                        res.json().then((data) => {
+                            alert(data.details);
+                        }).catch(() => {
+                                alert("오류가 발생했습니다. 잠시후 다시 시도해주세요.");
+                        });
+                    }
+                });
+
+            }
+        });
+    </script>
+</th:block>
+</html>

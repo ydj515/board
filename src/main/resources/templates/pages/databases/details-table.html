@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="ko" xml:lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/app}">
+
+<title layout:fragment="title">Table Details - MOLIT</title>
+
+<th:block layout:fragment="content">
+    <main>
+        <div class="container-fluid px-4">
+            <h1 class="mt-4">데이터베이스 관리</h1>
+            <ol class="breadcrumb mb-4">
+                <li class="breadcrumb-item"><a href="/">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="/databases">데이터베이스 관리</a></li>
+                <li class="breadcrumb-item active">테이블 상세조회</li>
+            </ol>
+            <div class="card mb-4">
+                <div class="card-body">
+                    테이블의 자세한 컬럼 정보를 확인할 수 있습니다.
+                </div>
+            </div>
+            <div class="container mt-5">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <span class="align-middle">테이블 상세</span>
+                    </div>
+                    <div th:if="${recordCount} > 0">
+                        <a class="btn btn-sm btn-primary" th:href="@{/databases/__${tableInfo.id}__/records}">데이터 조회</a>
+                    </div>
+                </div>
+                <hr class="bg-secondary border-1 border-secondary mt-1" />
+                <div class="container d-flex justify-content-between">
+                    <div class="col">
+                        <span class="align-middle total-count" th:text="'테이블 명 : ' + ${tableInfo.name}"></span>
+                    </div>
+                    <div class="col">
+                        <span class="align-middle total-count" th:text="'레코드 수 : ' + ${recordCount}"></span>
+                    </div>
+                </div>
+                <table class="table table-bordered mt-2">
+                    <colgroup>
+                        <col style="width: 20%">
+                        <col style="width: 40%">
+                        <col style="width: 40%">
+                    </colgroup>
+                    <thead>
+                    <tr class="text-center">
+                        <th>ID</th>
+                        <th>컬럼명</th>
+                        <th>타입</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:if="${#lists.size(columnInfoList) > 0}" th:each="columnInfo : ${columnInfoList}">
+                        <th class="text-center">
+                            <span th:text="${columnInfo.id}"></span>
+                        </th>
+                        <th class="text-center">
+                            <span class="api-key" th:text="${columnInfo.name}"></span>
+                        </th>
+                        <th class="text-center">
+                            <span th:text="${columnInfo.type}"></span>
+                        </th>
+                    </tr>
+                    <tr th:unless="${#lists.size(columnInfoList) > 0}">
+                        <th colspan="3" class="text-center">
+                            데이터가 없습니다.
+                        </th>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="d-flex justify-content-end mb-3">
+                <a href="/databases">
+                    <button type="button" class="btn btn-secondary">Back</button>
+                </a>
+            </div>
+        </div>
+    </main>
+</th:block>
+<th:block layout:fragment="scripts">
+    <script>
+    </script>
+</th:block>
+</html>

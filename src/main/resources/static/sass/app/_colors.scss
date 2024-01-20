@@ -1,0 +1,77 @@
+$colors: (
+        'primary': (
+                'lighten-2': #E1F1FF,
+                'lighten-1': #97CBFD,
+                'base': #1C7DD9,
+                'darken-1': #0C61B3,
+                'darken-2': #0D4070
+        ),
+        'secondary': (
+                'lighten-2': #B1A7FC,
+                'lighten-1': #7F6EF5,
+                'base': #5846DB,
+                'darken-1': #3F2CC6,
+                'darken-2': #30209E
+        ),
+        'point': (
+                'lighten-2': #FFFCE8,
+                'lighten-1': #FFF0A3,
+                'base': #FFDD2B,
+                'darken-1': #FFC42B,
+                'darken-2': #F1A241
+        ),
+        'red': (
+                'lighten-2': #FFCBCE,
+                'lighten-1': #F16C66,
+                'base': #FF3419,
+                'darken-1': #DF1616,
+                'darken-2': #C40000
+        ),
+        'background': (
+                'base': #F8F9FF
+        ),
+        'grey': (
+                'lighten-2': #EAF0F4,
+                'lighten-1': #C9CFD6,
+                'base': #9EA8B7,
+                'darken-1': #6F809C,
+                'darken-2': #4B5666
+        ),
+        'white': (
+                'base': #fff,
+        ),
+        'black': (
+                'lighten-2': #E0E0E0,
+                'lighten-1': #9E9E9E,
+                'base': #000,
+                'darken-1': #424242,
+                'darken-2': #212121
+        )
+);
+
+@each $color_type, $color_names in $colors {
+  @each $color_name, $color_value in $color_names {
+    @if $color_name == "base" {
+      .bg-#{$color_type} {
+        background-color: $color_value !important;
+      }
+      .text-#{$color_type} {
+        color: $color_value !important;
+      }
+    } @else if $color_name != "base" {
+      .bg-#{$color_type}-#{$color_name} {
+        background-color: $color_value !important;
+      }
+      .text-#{$color_type}-#{$color_name} {
+        color: $color_value !important;
+      }
+    }
+  }
+}
+
+@function getColor($color: 'primary', $type: 'base') {
+  $theme-color: map-get($colors, $color);
+  @return map-get($theme-color, $type);
+}
+
+$font-black: getColor('black', 'darken-1');

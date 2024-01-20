@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="ko" xml:lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta carset="UTF-8">
+    <title>Footer template</title>
+</head>
+<body>
+<th:block th:fragment="scripts" class="py-4 bg-light mt-auto">
+    <script src="/js/ext/bootstrap-5.3.2/bootstrap.bundle.min.js"
+            crossorigin="anonymous"></script>
+    <script src="/js/scripts.js"></script>
+    <script th:src="@{/js/jquery-3.7.1.min.js}"></script>
+</th:block>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ko" xml:lang="ko" xmlns:th="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <th:block th:insert="fragments/header :: header"></th:block>
+    <title layout:fragment="title"></title>
+</head>
+<body>
+<div>
+    <section>
+        <div class="sb-nav-fixed">
+            <th:block th:replace="fragments/topNav::top-nav"></th:block>
+            <div id="layoutSidenav">
+                <th:block th:replace="fragments/sideNav::side-nav"></th:block>
+                <div id="layoutSidenav_content">
+                    <div layout:fragment="content" class="container-fluid">
+                        Page Content
+                    </div>
+                    <th:block th:replace="fragments/footer::footer"></th:block>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<th:block th:replace="fragments/scripts::scripts"></th:block>
+<th:block layout:fragment="scripts"/>
+</body>
+</html>

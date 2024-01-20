@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="ko" xml:lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/app}">
+
+<title layout:fragment="title">Launcher - MOLIT</title>
+
+<th:block layout:fragment="content">
+    <main>
+        <div class="container-fluid px-4">
+            <h1 class="mt-4">Job Launcher</h1>
+            <ol class="breadcrumb mb-4">
+                <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
+                <li class="breadcrumb-item active">Job Launcher</li>
+            </ol>
+            <div class="card mb-4">
+                <div class="card-body">
+                    실행 가능한 Job을 실행할 수 있습니다.
+                </div>
+            </div>
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-table me-1"></i>
+                    Job Launcher
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Executable Job Name</th>
+                            <th>Execute</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <!-- Use Thymeleaf each loop to iterate through the list of logs -->
+                        <tr th:each="job, iterStat : ${jobPreviewVOList}">
+                            <td th:text="${iterStat.index+1}"></td>
+                            <td th:text="${job.getJobName()}"></td>
+                            <td>
+                                <form th:action="@{/admin/jobs/launcher/launch}" method="post">
+                                    <input type="hidden" name="jobName" th:value="${job.getJobName()}" />
+                                    <button type="submit" class="btn btn-primary">execute</button>
+                                </form>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+</th:block>
+</html>

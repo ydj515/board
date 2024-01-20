@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="ko" xml:lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/app}">
+
+<title layout:fragment="title">Logs - MOLIT</title>
+
+<th:block layout:fragment="content">
+    <main>
+        <div class="container-fluid px-4">
+            <h1 class="mt-4">Job Execution Log</h1>
+            <ol class="breadcrumb mb-4">
+                <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
+                <li class="breadcrumb-item active">Job Execution Log</li>
+            </ol>
+            <div class="card mb-4">
+                <div class="card-body">
+                    Job 실행 결과를 기록한 Log를 확인할 수 있습니다.
+                </div>
+            </div>
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-table me-1"></i>
+                    Job Execution Log Table
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Job Name</th>
+                            <th>Batch Status</th>
+                            <th>Start Time</th>
+                            <th>End Time</th>
+                            <th>#Success</th>
+                            <th>#Fail</th>
+                            <th>Details</th>
+                        </tr>
+                        </thead>
+                        <tfoot>
+                        <tr>
+                            <th>ID</th>
+                            <th>Job Name</th>
+                            <th>Batch Status</th>
+                            <th>Start Time</th>
+                            <th>End Time</th>
+                            <th>#Success</th>
+                            <th>#Fail</th>
+                            <th>Details</th>
+                        </tr>
+                        </tfoot>
+                        <tbody>
+                        <!-- Use Thymeleaf each loop to iterate through the list of logs -->
+                        <tr th:each="log : ${jobExecutionLogList}">
+                            <td th:text="${log.id}"></td>
+                            <td th:text="${log.jobName}"></td>
+                            <td th:text="${log.batchStatus}"></td>
+                            <td th:text="${#dates.format(log.startTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                            <td th:text="${#dates.format(log.endTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                            <td th:text="${log.successCount}"></td>
+                            <td th:text="${log.failCount}"></td>
+                            <td>
+                                <a th:href="@{./log/{executionId}/detail(executionId=${log.id})}">
+                                    <button type="button" class="btn btn-secondary">details</button>
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card mb-4">
+                <div class="card-body">
+                    (#Fail = #Read - #Write | #Success = #Write)
+                </div>
+            </div>
+        </div>
+    </main>
+</th:block>
+</html>

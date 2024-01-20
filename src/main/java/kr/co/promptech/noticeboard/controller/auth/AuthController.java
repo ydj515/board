@@ -1,4 +1,4 @@
-package kr.co.promptech.noticeboard.controller.member;
+package kr.co.promptech.noticeboard.controller.auth;
 
 import kr.co.promptech.noticeboard.domain.dto.JoinDto;
 import kr.co.promptech.noticeboard.domain.dto.LoginDto;
@@ -18,7 +18,7 @@ import static kr.co.promptech.noticeboard.enums.ResultCode.*;
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
-public class MemberAuthController {
+public class AuthController {
 
     private final MemberAuthService memberAuthService;
 

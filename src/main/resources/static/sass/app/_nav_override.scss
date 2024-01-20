@@ -1,0 +1,49 @@
+.sb-topnav {
+  background: linear-gradient(90deg, getColor('primary', 'darken-1') 0%, getColor('primary', 'base') 50%, getColor('primary', 'lighten-1') 100%);
+  z-index: 100002 !important;
+}
+
+.sb-sidenav.sb-sidenav-dark {
+  background-color: getColor('primary');
+
+  .sb-sidenav-menu {
+    .nav {
+      .sb-sidenav-menu-heading {
+        color: getColor('grey', 'lighten-1');
+      }
+
+      .nav-link {
+        color: getColor('grey', 'lighten-1');
+
+        &.active,
+        &:hover,
+        &:focus {
+          color: #fff;
+        }
+      }
+
+      .sb-sidenav-menu-nested {
+        padding-left: 1.5rem;
+        margin: 0;
+        //background-color: getColor('primary', 'darken-1');
+      }
+    }
+  }
+
+  .sb-sidenav-footer {
+    background-color: getColor('primary', 'darken-2');
+
+    img {
+      width: 117px;
+    }
+  }
+}
+
+#sidebarToggle {
+  color: #fff;
+
+  &:hover,
+  &:focus {
+    color: getColor('grey', 'lighten-2');
+  }
+}

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<head>
+    <title>로그인</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="login-wrapper">
+        <h2>Login</h2>
+        <form method="post" action="서버의url" id="login-form">
+            <label>
+                <input type="text" name="userId" placeholder="id">
+            </label>
+            <label>
+                <input type="password" name="userPassword" placeholder="password">
+            </label>
+            <label for="remember-check">
+                <input type="checkbox" id="remember-check">아이디 저장하기
+            </label>
+            <input type="submit" value="Login">
+        </form>
+    </div>
+
+    <div class="sign-up-wrapper">
+        <input type="button" value="회원가입">
+    </div>
+</div>
+
+</body>
+
+<th:block layout:fragment="scripts">
+    <script th:src="@{/js/signup-manager.js}"></script>
+</th:block>
+</html>
+
+<script type="text/javascript">
+    $(function() {
+        $('#register-board-btn').on('click', function () {
+            location.href='new';
+        });
+
+    });
+
+</script>

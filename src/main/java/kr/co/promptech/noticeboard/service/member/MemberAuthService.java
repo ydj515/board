@@ -7,10 +7,12 @@ import kr.co.promptech.noticeboard.constants.Constants;
 import kr.co.promptech.noticeboard.domain.dto.JoinDto;
 import kr.co.promptech.noticeboard.domain.dto.LoginDto;
 import kr.co.promptech.noticeboard.domain.entity.Member;
+import kr.co.promptech.noticeboard.domain.global.request.RefreshTokenRequest;
 import kr.co.promptech.noticeboard.domain.vo.JoinVo;
 import kr.co.promptech.noticeboard.domain.vo.LoginVo;
 import kr.co.promptech.noticeboard.enums.Role;
 import kr.co.promptech.noticeboard.repository.MemberRepository;
+import kr.co.promptech.noticeboard.service.redis.RedisTokenService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -38,6 +40,7 @@ public class MemberAuthService {
     private final BCryptPasswordEncoder passwordEncoder;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final TokenProvider tokenProvider;
+    private final RedisTokenService redisTokenService;
 
     @Transactional
     public JoinVo join(JoinDto joinDto) {
@@ -61,36 +64,14 @@ public class MemberAuthService {
         return tokenProvider.generateTokenDto(authenticate);
     }
 
-    public LoginVo refresh(String refreshToken) {
-        if (!tokenProvider.validateToken(refreshToken)) {
+    public LoginVo refresh(RefreshTokenRequest refreshTokenRequest) {
+        if (!tokenProvider.validateToken(refreshTokenRequest.getRefreshToken())) {
             throw new IllegalArgumentException("유효하지 않은 토큰입니다.");
         }
 
-        // TODO :: origin access token get
-        String originAccessToken = "";
-        Claims claims = tokenProvider.parseClaims(originAccessToken);
+        String reIssuedAccessToken = tokenProvider.reIssueAccessToken(refreshTokenRequest);
 
-        String sub = claims.get("sub").toString();
-        Date now = new Date();
-
-        Member member = memberRepository.findById(Long.parseLong(sub)).orElseThrow(() ->
-                new IllegalArgumentException("유효하지 않은 회원입니다.")
-        );
-
-        Role role = Role.valueOf(member.getRole().roleName);
-        String[] roleSplitList = role.roleList.split(",");
-        List<String> trimRoleList = Arrays.stream(roleSplitList)
-                .map(r -> String.format("ROLE_%s", r.trim())).toList();
-        String roleList = trimRoleList.toString().replace("[", "").replace("]", "")
-                .replace(" ", "");
-
-        String accessToken = tokenProvider.createAccessToken(String.valueOf(member.getId()),
-                roleList, now);
-
-        Authentication authentication = tokenProvider.getAuthentication(accessToken);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        return new LoginVo(Constants.BEARER_PREFIX, accessToken, refreshToken, null, null);
+        return new LoginVo(Constants.BEARER_PREFIX, reIssuedAccessToken, refreshTokenRequest.getRefreshToken(), null, null);
     }
 
     public LoginVo authKakao(String code) {

@@ -33,6 +33,10 @@ spring:
       max-file-size: 200MB
       max-request-size: 200MB
       location: upload-path/
+  data:
+    redis:
+      host: localhost
+      port: 6379
 
 logging:
   level:
@@ -48,7 +52,7 @@ logging:
 
 jwt:
   secret: mymasterjsonwebtokensecretkeywithdongjinwithhyuntto
-  access-token-expiration: 1800000 # 30분(밀리초단위)
+  access-token-expiration: 10000 # 10초(밀리초단위)
   refresh-token-expiration: 2592000000 # 30일(밀리초단위)
 
 external:

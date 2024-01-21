@@ -3,6 +3,7 @@ package kr.co.promptech.noticeboard.controller.member;
 import kr.co.promptech.noticeboard.domain.dto.JoinDto;
 import kr.co.promptech.noticeboard.domain.dto.LoginDto;
 import kr.co.promptech.noticeboard.domain.global.Api;
+import kr.co.promptech.noticeboard.domain.global.request.RefreshTokenRequest;
 import kr.co.promptech.noticeboard.domain.vo.JoinVo;
 import kr.co.promptech.noticeboard.domain.vo.LoginVo;
 import kr.co.promptech.noticeboard.service.member.MemberAuthService;
@@ -48,13 +49,13 @@ public class MemberAuthController {
         return "success";
     }
 
-    @GetMapping("/refresh/{refresh_token}")
-    public ResponseEntity<Api<LoginVo>> refresh(@PathVariable(value = "refresh_token") String refreshToken) {
+    @PostMapping("/refresh")
+    public ResponseEntity<Api<LoginVo>> refresh(@RequestBody RefreshTokenRequest refreshTokenRequest) {
         return ResponseEntity.ok(
                 Api.<LoginVo>builder()
                         .code(REFRESH_SUCCESS.code)
                         .message(REFRESH_SUCCESS.message)
-                        .data(memberAuthService.refresh(refreshToken))
+                        .data(memberAuthService.refresh(refreshTokenRequest))
                         .build()
         );
     }

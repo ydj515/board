@@ -2,7 +2,7 @@ package kr.co.promptech.noticeboard.domain.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import kr.co.promptech.noticeboard.domain.dto.JoinDto;
+import kr.co.promptech.noticeboard.domain.global.request.JoinRequest;
 import kr.co.promptech.noticeboard.enums.Role;
 import kr.co.promptech.noticeboard.enums.SnsJoinType;
 import kr.co.promptech.noticeboard.enums.Status;
@@ -78,17 +78,17 @@ public class Member {
         this.modifiedAt = modifiedAt;
     }
 
-    public static Member of(JoinDto joinDto) {
+    public static Member of(JoinRequest joinRequest) {
         LocalDateTime now = LocalDateTime.now();
-        return new Member(joinDto.getEmail(), joinDto.getPassword(), joinDto.getNickname(),
-                joinDto.getName(), joinDto.getBirth(), Role.MEMBER, null, null, Status.NORMAL, now,
+        return new Member(joinRequest.getEmail(), joinRequest.getPassword(), joinRequest.getNickname(),
+                joinRequest.getName(), joinRequest.getBirth(), Role.MEMBER, null, null, Status.NORMAL, now,
                 now);
     }
 
-    public static Member of(JoinDto joinDto, String snsId, SnsJoinType snsType) {
+    public static Member of(JoinRequest joinRequest, String snsId, SnsJoinType snsType) {
         LocalDateTime now = LocalDateTime.now();
-        return new Member(joinDto.getEmail(), joinDto.getPassword(), joinDto.getNickname(),
-                joinDto.getName(), joinDto.getBirth(), Role.MEMBER, snsId, snsType, Status.NORMAL, now,
+        return new Member(joinRequest.getEmail(), joinRequest.getPassword(), joinRequest.getNickname(),
+                joinRequest.getName(), joinRequest.getBirth(), Role.MEMBER, snsId, snsType, Status.NORMAL, now,
                 now);
     }
 

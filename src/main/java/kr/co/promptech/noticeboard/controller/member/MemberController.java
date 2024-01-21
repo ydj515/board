@@ -1,10 +1,10 @@
 package kr.co.promptech.noticeboard.controller.member;
 
 import jakarta.servlet.http.HttpServletRequest;
-import kr.co.promptech.noticeboard.domain.dto.PatchMemberDto;
-import kr.co.promptech.noticeboard.domain.global.Api;
-import kr.co.promptech.noticeboard.domain.vo.MemberVo;
-import kr.co.promptech.noticeboard.domain.vo.MessageVo;
+import kr.co.promptech.noticeboard.domain.global.request.PatchMemberRequest;
+import kr.co.promptech.noticeboard.domain.global.base.Api;
+import kr.co.promptech.noticeboard.domain.global.response.MemberResponse;
+import kr.co.promptech.noticeboard.domain.global.base.MessageVo;
 import kr.co.promptech.noticeboard.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,9 +24,9 @@ public class MemberController {
     private final MemberService memberService;
 
     @GetMapping
-    public ResponseEntity<Api<MemberVo>> member(HttpServletRequest request) {
+    public ResponseEntity<Api<MemberResponse>> member(HttpServletRequest request) {
         return ResponseEntity.ok(
-                Api.<MemberVo>builder()
+                Api.<MemberResponse>builder()
                         .code(SUCCESS.code)
                         .message(SUCCESS.message)
                         .data(memberService.member(request))
@@ -36,13 +36,13 @@ public class MemberController {
 
     @PatchMapping
     public ResponseEntity<Api<MessageVo>> patchMember(
-            @RequestBody @Validated PatchMemberDto patchMemberDto, HttpServletRequest request,
+            @RequestBody @Validated PatchMemberRequest patchMemberRequest, HttpServletRequest request,
             BindingResult bindingResult) {
         return ResponseEntity.ok(
                 Api.<MessageVo>builder()
                         .code(SUCCESS.code)
                         .message(SUCCESS.message)
-                        .data(memberService.patchMember(patchMemberDto, request))
+                        .data(memberService.patchMember(patchMemberRequest, request))
                         .build()
         );
     }

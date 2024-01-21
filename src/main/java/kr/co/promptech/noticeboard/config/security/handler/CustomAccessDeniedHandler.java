@@ -5,7 +5,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import kr.co.promptech.noticeboard.constants.Constants;
-import kr.co.promptech.noticeboard.domain.global.ErrorDto;
+import kr.co.promptech.noticeboard.domain.global.base.ErrorDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ProblemDetail;

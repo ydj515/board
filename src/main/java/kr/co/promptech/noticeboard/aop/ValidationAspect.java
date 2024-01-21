@@ -1,6 +1,6 @@
 package kr.co.promptech.noticeboard.aop;
 
-import kr.co.promptech.noticeboard.domain.global.ErrorDto;
+import kr.co.promptech.noticeboard.domain.global.base.ErrorDto;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;

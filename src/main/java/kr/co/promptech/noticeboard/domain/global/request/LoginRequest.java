@@ -1,4 +1,4 @@
-package kr.co.promptech.noticeboard.domain.dto;
+package kr.co.promptech.noticeboard.domain.global.request;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -11,7 +11,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class LoginDto {
+public class LoginRequest {
 
     @NotNull(message = "email cannot be empty.")
     private String email;

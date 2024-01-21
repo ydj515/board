@@ -3,7 +3,7 @@ package kr.co.promptech.noticeboard.controller.member;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.co.promptech.noticeboard.BaseTest;
 import kr.co.promptech.noticeboard.RestdocsConfig;
-import kr.co.promptech.noticeboard.domain.dto.JoinDto;
+import kr.co.promptech.noticeboard.domain.global.request.JoinRequest;
 import kr.co.promptech.noticeboard.enums.ResultCode;
 import kr.co.promptech.noticeboard.service.member.MemberAuthService;
 import org.assertj.core.api.Assertions;
@@ -50,12 +50,12 @@ class MemberAuthControllerTest extends BaseTest {
     @DisplayName(PREFIX + "/join")
     void join() throws Exception {
         //given
-        JoinDto joinDto = new JoinDto("juno@auth.com", "password", "name", "nick", "19941030");
+        JoinRequest joinRequest = new JoinRequest("juno@auth.com", "password", "name", "nick", "19941030");
 
         //when
         ResultActions resultActions = mock.perform(
                 post(PREFIX + "/join").contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(joinDto))
+                        .content(objectMapper.writeValueAsString(joinRequest))
         ).andDo(print());
 
         //then

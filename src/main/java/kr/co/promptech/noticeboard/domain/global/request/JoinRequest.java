@@ -1,4 +1,4 @@
-package kr.co.promptech.noticeboard.domain.dto;
+package kr.co.promptech.noticeboard.domain.global.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -10,7 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class JoinDto {
+public class JoinRequest {
 
     @NotNull(message = "You can't be without email.")
     @Email(message = "Please correct the email format.", regexp = "^[A-Za-z0-9+_.-]+@(.+)$\n")

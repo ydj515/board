@@ -52,7 +52,7 @@ logging:
 
 jwt:
   secret: mymasterjsonwebtokensecretkeywithdongjinwithhyuntto
-  access-token-expiration: 10000 # 10초(밀리초단위)
+  access-token-expiration: 1000000 # 1000초(밀리초단위)
   refresh-token-expiration: 2592000000 # 30일(밀리초단위)
 
 external:

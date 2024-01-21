@@ -1,4 +1,4 @@
-package kr.co.promptech.noticeboard.domain.global;
+package kr.co.promptech.noticeboard.domain.global.base;
 
 import lombok.*;
 

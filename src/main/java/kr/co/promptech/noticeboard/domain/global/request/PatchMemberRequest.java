@@ -1,4 +1,4 @@
-package kr.co.promptech.noticeboard.domain.dto;
+package kr.co.promptech.noticeboard.domain.global.request;
 
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -12,7 +12,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PatchMemberDto {
+public class PatchMemberRequest {
 
     private String birth;
     private String name;

@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import kr.co.promptech.noticeboard.constants.Constants;
 import kr.co.promptech.noticeboard.domain.entity.Member;
 import kr.co.promptech.noticeboard.domain.global.request.RefreshTokenRequest;
-import kr.co.promptech.noticeboard.domain.vo.LoginVo;
+import kr.co.promptech.noticeboard.domain.global.response.LoginResponse;
 import kr.co.promptech.noticeboard.enums.Role;
 import kr.co.promptech.noticeboard.repository.MemberRepository;
 import kr.co.promptech.noticeboard.service.auth.AuthService;
@@ -57,7 +57,7 @@ public class TokenProvider {
     }
 
     // 토큰 생성
-    public LoginVo generateTokenDto(Authentication authentication) {
+    public LoginResponse generateTokenDto(Authentication authentication) {
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
@@ -72,7 +72,7 @@ public class TokenProvider {
 
         redisTokenService.saveRefreshToken(authentication.getName(), refreshToken, now.getTime() + refreshTokenExpiration);
 
-        return new LoginVo(Constants.BEARER_PREFIX, accessToken, refreshToken, null, null);
+        return new LoginResponse(Constants.BEARER_PREFIX, accessToken, refreshToken, null, null);
     }
 
     public String createAccessToken(String subject, String authorities, Date nowDate) {

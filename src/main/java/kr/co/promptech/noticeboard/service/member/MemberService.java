@@ -3,10 +3,10 @@ package kr.co.promptech.noticeboard.service.member;
 
 import jakarta.servlet.http.HttpServletRequest;
 import kr.co.promptech.noticeboard.config.security.provider.TokenProvider;
-import kr.co.promptech.noticeboard.domain.dto.PatchMemberDto;
+import kr.co.promptech.noticeboard.domain.global.request.PatchMemberRequest;
 import kr.co.promptech.noticeboard.domain.entity.Member;
-import kr.co.promptech.noticeboard.domain.vo.MemberVo;
-import kr.co.promptech.noticeboard.domain.vo.MessageVo;
+import kr.co.promptech.noticeboard.domain.global.response.MemberResponse;
+import kr.co.promptech.noticeboard.domain.global.base.MessageVo;
 import kr.co.promptech.noticeboard.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,20 +33,20 @@ public class MemberService {
         return memberRepository.findById(memberId).orElseThrow(() -> new IllegalArgumentException("유효하지 않은 회원입니다."));
     }
 
-    public MemberVo member(HttpServletRequest request) {
+    public MemberResponse member(HttpServletRequest request) {
         Member findMember = getMember(request);
 
-        return new MemberVo(findMember.getId(), findMember.getEmail(), findMember.getNickname(), findMember.getName(), findMember.getRole(), findMember.getSnsType(), findMember.getStatus(), findMember.getCreatedAt(), findMember.getModifiedAt());
+        return new MemberResponse(findMember.getId(), findMember.getEmail(), findMember.getNickname(), findMember.getName(), findMember.getRole(), findMember.getSnsType(), findMember.getStatus(), findMember.getCreatedAt(), findMember.getModifiedAt());
     }
 
     @Transactional
-    public MessageVo patchMember(PatchMemberDto patchMemberDto, HttpServletRequest request) {
+    public MessageVo patchMember(PatchMemberRequest patchMemberRequest, HttpServletRequest request) {
         Member member = getMember(request);
 
-        String birth = Optional.ofNullable(patchMemberDto.getBirth()).orElse("").replaceAll("-", "").trim();
-        String name = Optional.ofNullable(patchMemberDto.getName()).orElse("").trim();
-        String nickname = Optional.ofNullable(patchMemberDto.getNickname()).orElse("").trim();
-        String password = Optional.ofNullable(patchMemberDto.getPassword()).orElse("").trim();
+        String birth = Optional.ofNullable(patchMemberRequest.getBirth()).orElse("").replaceAll("-", "").trim();
+        String name = Optional.ofNullable(patchMemberRequest.getName()).orElse("").trim();
+        String nickname = Optional.ofNullable(patchMemberRequest.getNickname()).orElse("").trim();
+        String password = Optional.ofNullable(patchMemberRequest.getPassword()).orElse("").trim();
         if (!password.isEmpty()) {
             password = passwordEncoder.encode(password);
         }

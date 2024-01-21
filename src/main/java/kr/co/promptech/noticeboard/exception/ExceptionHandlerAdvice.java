@@ -1,6 +1,6 @@
 package kr.co.promptech.noticeboard.exception;
 
-import kr.co.promptech.noticeboard.domain.global.ErrorDto;
+import kr.co.promptech.noticeboard.domain.global.base.ErrorDto;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.impl.SizeLimitExceededException;
 import org.springframework.http.*;

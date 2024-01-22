@@ -1,0 +1,91 @@
+version: '2'
+
+networks:
+  app-tier:
+    driver: bridge
+
+services:
+  redis:
+    image: 'bitnami/redis:latest'
+    environment:
+      - REDIS_REPLICATION_MODE=master
+      - ALLOW_EMPTY_PASSWORD=yes
+    networks:
+      - app-tier
+    ports:
+      - 6379:6379
+  redis-slave-1:
+    image: 'bitnami/redis:latest'
+    environment:
+      - REDIS_REPLICATION_MODE=slave
+      - REDIS_MASTER_HOST=redis
+      - ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - 6479:6379
+    depends_on:
+      - redis
+    networks:
+      - app-tier
+  redis-slave-2:
+    image: 'bitnami/redis:latest'
+    environment:
+      - REDIS_REPLICATION_MODE=slave
+      - REDIS_MASTER_HOST=redis
+      - ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - 6579:6379
+    depends_on:
+      - redis
+    networks:
+      - app-tier
+
+  redis-sentinel-1:
+    image: 'bitnami/redis-sentinel:latest'
+    environment:
+      - REDIS_SENTINEL_DOWN_AFTER_MILLISECONDS=3000
+      - REDIS_MASTER_HOST=redis
+      - REDIS_MASTER_PORT_NUMBER=6379
+      - REDIS_MASTER_SET=mymaster
+      - REDIS_SENTINEL_QUORUM=2
+    depends_on:
+      - redis
+      - redis-slave-1
+      - redis-slave-2
+    ports:
+      - '26379:26379'
+    networks:
+      - app-tier
+
+  redis-sentinel-2:
+    image: 'bitnami/redis-sentinel:latest'
+    environment:
+      - REDIS_SENTINEL_DOWN_AFTER_MILLISECONDS=3000
+      - REDIS_MASTER_HOST=redis
+      - REDIS_MASTER_PORT_NUMBER=6379
+      - REDIS_MASTER_SET=mymaster
+      - REDIS_SENTINEL_QUORUM=2
+    depends_on:
+      - redis
+      - redis-slave-1
+      - redis-slave-2
+    ports:
+      - '26380:26379'
+    networks:
+      - app-tier
+
+  redis-sentinel-3:
+    image: 'bitnami/redis-sentinel:latest'
+    environment:
+      - REDIS_SENTINEL_DOWN_AFTER_MILLISECONDS=3000
+      - REDIS_MASTER_HOST=redis
+      - REDIS_MASTER_PORT_NUMBER=6379
+      - REDIS_MASTER_SET=mymaster
+      - REDIS_SENTINEL_QUORUM=2
+    depends_on:
+      - redis
+      - redis-slave-1
+      - redis-slave-2
+    ports:
+      - '26381:26379'
+    networks:
+      - app-tier

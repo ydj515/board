@@ -37,6 +37,9 @@ spring:
     redis:
       host: localhost
       port: 6379
+#      sentinel:
+#        master: mymaster
+#        nodes: 172.27.0.7:26379, 172.27.0.5:26380, 172.27.0.6:26381
 
 logging:
   level:

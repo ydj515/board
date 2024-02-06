@@ -1,9 +1,0 @@
-<html lagn="ko" xmlns:th="http://www.thymeleaf.org">
-<!--headerFragment 선언-->
-<head th:fragment="headerFragment">
-    <title>title</title>
-    <th:block th:switch="${#httpServletRequest.getContextPath()}">
-        <meta th:default="'*'" name="ctx" th:content="${#httpServletRequest.getContextPath()}">
-    </th:block>
-</head>
-</html>

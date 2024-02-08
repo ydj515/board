@@ -3,7 +3,9 @@ package kr.co.promptech.noticeboard.config.redis;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.RedisPassword;
 import org.springframework.data.redis.connection.RedisSentinelConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 
@@ -26,6 +28,7 @@ public class RedisConfig {
 //    private String sentinelNodes;
 
     @Bean
+    @Profile("dev")
     public RedisConnectionFactory redisConnectionFactory() {
         return new LettuceConnectionFactory(host, port);
     }
@@ -39,5 +42,13 @@ public class RedisConfig {
 //    private Set<String> parseSentinelNodes(String nodes) {
 //        return new HashSet<>(Arrays.asList(nodes.split(",")));
 //    }
+
+    @Bean
+    @Profile("prod")
+    public RedisConnectionFactory redisConnectionFactoryProd() {
+        LettuceConnectionFactory connectionFactory = new LettuceConnectionFactory(host, port);
+        connectionFactory.setPassword(String.valueOf(RedisPassword.of("암호")));
+        return connectionFactory;
+    }
 
 }
